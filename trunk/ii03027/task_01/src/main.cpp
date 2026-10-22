@@ -11,9 +11,9 @@
 
 double generateSignal(int type, int t) {
     switch(type) {
-        case 0: return 1.0;                         
-        case 1: return (t == 0) ? 1.0 : 0.0;        
-        case 2: return std::sin(t);                 
+        case 0: return 1.0;
+        case 1: return (t == 0) ? 1.0 : 0.0;
+        case 2: return std::sin(t);
         default: return 0.0;
     }
 }
@@ -27,7 +27,7 @@ std::string getSignalName(int type) {
     }
 }
 
-void runSimulation(std::shared_ptr<Model> model, int steps, int signalType, const std::string& modelName, std::ofstream& csvFile) {
+void runSimulation(const std::shared_ptr<Model>& model, int steps, int signalType, const std::string& modelName, std::ofstream& csvFile) {
     model->reset();
     std::string sigName = getSignalName(signalType);
     
@@ -64,9 +64,9 @@ int main() {
         {diffModel, "Model_3.2"}
     };
 
-    for (auto& pair : models) {
+    for (const auto& [model, name] : models) {
         for (int sigType = 0; sigType < 3; ++sigType) {
-            runSimulation(pair.first, steps, sigType, pair.second, csvFile);
+            runSimulation(model, steps, sigType, name, csvFile);
         }
     }
 

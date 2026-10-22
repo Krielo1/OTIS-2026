@@ -1,15 +1,17 @@
 #pragma once
 #include "Model.h"
 
-// Линейная модель 1.3: y(t+1) = a1*y(t) + a2*y(t-1) + b*u(t)
 class LinearModel13 : public Model {
 private:
-    double a1, a2, b;
-    double y_t;         
-    double y_t_minus_1; 
+    double a1 = 0.0;
+    double a2 = 0.0;
+    double b = 0.0;
+    double y_t = 0.0;
+    double y_t_minus_1 = 0.0;
+
 public:
     LinearModel13(double _a1, double _a2, double _b) 
-        : a1(_a1), a2(_a2), b(_b), y_t(0.0), y_t_minus_1(0.0) {}
+        : a1(_a1), a2(_a2), b(_b) {}
 
     void reset() override {
         y_t = 0.0;
