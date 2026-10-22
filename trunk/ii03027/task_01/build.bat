@@ -5,11 +5,10 @@ if not exist build mkdir build
 cd build
 
 echo [2/4] Запуск CMake и сборка...
-cmake -G "MinGW Makefiles" ..
+cmake -G "MinGW Makefiles" ..\src
 cmake --build . --config Release
 
 echo [3/4] Запуск программы...
-:: Автоматически передаем 10 как количество шагов (n)
 if exist Release\Lab1_Modeling.exe (
     echo 10 | Release\Lab1_Modeling.exe
 ) else (
