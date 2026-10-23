@@ -15,37 +15,49 @@ except FileNotFoundError:
     exit()
 
 def show_plot():
-    models = df['Model'].unique()
-    fig, axes = plt.subplots(1, len(models), figsize=(10 * len(models), 6), num="График")
-    fig.suptitle('Результаты моделирования (Вариант 27)', fontsize=16)
+    selected_signal = combo_signal.get() 
+    model_name = df['Model'].iloc[0]    
+    
+    if selected_signal == "Все сигналы":
+        plot_data = df
+    else:
+        plot_data = df[df['Signal'] == selected_signal]
 
-    if len(models) == 1:
-        axes = [axes]
+    fig, ax = plt.subplots(figsize=(10, 6), num=f"График: {selected_signal}")
+    fig.suptitle(f'Модель: {model_name} | Сигнал: {selected_signal}', fontsize=16)
 
-    for i, model_name in enumerate(models):
-        ax = axes[i]
-        model_data = df[df['Model'] == model_name]
-        
-        for signal in model_data['Signal'].unique():
-            sig_data = model_data[model_data['Signal'] == signal]
+    if selected_signal == "Все сигналы":
+        for signal in plot_data['Signal'].unique():
+            sig_data = plot_data[plot_data['Signal'] == signal]
             ax.plot(sig_data['Step'], sig_data['y'], label=signal, linewidth=2)
-        
-        ax.set_title(model_name, fontsize=14)
-        ax.set_xlabel('Шаг (t)', fontsize=12)
-        ax.set_ylabel('Выход y(t)', fontsize=12)
-        ax.legend(fontsize=12)
-        ax.grid(True, linestyle='--', alpha=0.7)
+    else:
+        ax.plot(plot_data['Step'], plot_data['y'], label=selected_signal, linewidth=2.5, color='red')
+
+    ax.set_xlabel('Шаг симуляции (t)', fontsize=12)
+    ax.set_ylabel('Выход y(t)', fontsize=12)
+    ax.legend(fontsize=12)
+    ax.grid(True, linestyle='--', alpha=0.7)
 
     plt.tight_layout()
-    plt.savefig('doc/graphs/plot_results.png') 
+    plt.savefig(f'doc/graphs/plot_{selected_signal}.png') 
     plt.show()
 
 root = tk.Tk()
-root.title("Результаты симуляции")
-root.geometry("900x700")
+root.title("Результаты симуляции (Вариант 27)")
+root.geometry("1000x700")
+root.configure(bg="#f0f0f0") 
 
-btn = tk.Button(root, text="Показать график", command=show_plot, font=("Arial", 12), bg="#4CAF50", fg="white")
-btn.pack(pady=10)
+control_frame = tk.Frame(root, bg="#f0f0f0", pady=10)
+control_frame.pack(fill='x', padx=10)
+
+tk.Label(control_frame, text="Выберите сигнал для графика:", bg="#f0f0f0", font=("Arial", 11)).pack(side='left', padx=(0, 10))
+
+combo_signal = ttk.Combobox(control_frame, values=["Все сигналы", "Step", "Impulse", "Harmonic"], state="readonly", font=("Arial", 11))
+combo_signal.current(0) 
+combo_signal.pack(side='left', padx=(0, 20))
+
+btn_show = tk.Button(control_frame, text="Показать график", command=show_plot, font=("Arial", 11, "bold"), bg="#4CAF50", fg="white", relief="flat", padx=10)
+btn_show.pack(side='left')
 
 frame = ttk.Frame(root)
 frame.pack(fill='both', expand=True, padx=10, pady=10)
@@ -53,7 +65,13 @@ frame.pack(fill='both', expand=True, padx=10, pady=10)
 scrollbar = ttk.Scrollbar(frame)
 scrollbar.pack(side='right', fill='y')
 
-tree = ttk.Treeview(frame, yscrollcommand=scrollbar.set)
+style = ttk.Style()
+style.theme_use("clam") 
+style.configure("Treeview.Heading", font=('Arial', 11, 'bold'), background="#4a4a4a", foreground="white")
+style.map("Treeview.Heading", background=[('active', '#3a3a3a')]) 
+style.configure("Treeview", font=('Arial', 10), rowheight=25)
+
+tree = ttk.Treeview(frame, yscrollcommand=scrollbar.set, style="Treeview")
 tree.pack(side='left', fill='both', expand=True)
 scrollbar.config(command=tree.yview)
 
@@ -63,10 +81,14 @@ tree['show'] = 'headings'
 
 for col in columns:
     tree.heading(col, text=col)
-    tree.column(col, width=100, anchor='center')
+    tree.column(col, width=120, anchor='center')
 
-for _, row in df[columns].iterrows():
-    tree.insert('', 'end', values=list(row))
+for index, (_, row) in enumerate(df[columns].iterrows()):
+    tag = 'evenrow' if index % 2 == 0 else 'oddrow'
+    tree.insert('', 'end', values=list(row), tags=(tag,))
 
-print("Окно с таблицей открыто. Нажмите кнопку, чтобы увидеть график.")
+tree.tag_configure('evenrow', background='#ffffff')
+tree.tag_configure('oddrow', background='#f9f9f9')
+
+print("Окно с таблицей открыто. Выберите сигнал и нажмите кнопку.")
 root.mainloop()
