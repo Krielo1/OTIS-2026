@@ -35,7 +35,7 @@ def show_plot():
     selected_signal = combo_signal.get()
     model_name = df['Model'].iloc[0]
     
-    if selected_signal == "Все сигналы":
+    if selected_signal == "All signals":
         plot_data = df
     else:
         plot_data = df[df['Signal'] == selected_signal]
