@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iomanip>
 #include <limits>
+
 #include "Model.h"
 #include "Model 1.3.h"
 #include "Model 2.10.h"
@@ -59,17 +60,10 @@ std::string getSignalName(int type) {
 void runSimulation(const std::shared_ptr<Model>& model, int steps, int signalType, const std::string& modelName, std::ofstream& csvFile) {
     model->reset();
     std::string sigName = getSignalName(signalType);
-    
-    std::cout << "\n--- Модель: " << modelName << " | Сигнал: " << sigName << " ---" << std::endl;
-    std::cout << std::setw(5) << "t" << std::setw(15) << "u(t)" << std::setw(15) << "y(t)" << std::endl;
 
     for (int t = 0; t < steps; ++t) {
         double u = generateSignal(signalType, t);
         double y = model->step(u);
-        
-        std::cout << std::setw(5) << t 
-                  << std::setw(15) << std::fixed << std::setprecision(4) << u 
-                  << std::setw(15) << std::fixed << std::setprecision(4) << y << std::endl;
                   
         csvFile << modelName << "," << sigName << "," << t << "," << u << "," << y << "\n";
     }
