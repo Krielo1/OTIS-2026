@@ -10,9 +10,9 @@ cmake --build . --config Release
 
 echo [3/4] Запуск программы...
 if exist Release\Lab1_Modeling.exe (
-    echo 10 | Release\Lab1_Modeling.exe
+    Release\Lab1_Modeling.exe
 ) else (
-    echo 10 | Lab1_Modeling.exe
+     Lab1_Modeling.exe
 )
 
 echo [4/4] Запуск визуализации (Python)...
