@@ -20,7 +20,7 @@ def update_table(event=None):
     for i in tree.get_children():
         tree.delete(i)
     
-    if selected_signal == "All signals":
+    if selected_signal == "All_signals":
         filtered_df = df
     else:
         filtered_df = df[df['Signal'] == selected_signal]
@@ -35,7 +35,7 @@ def show_plot():
     selected_signal = combo_signal.get()
     model_name = df['Model'].iloc[0]
     
-    if selected_signal == "All signals":
+    if selected_signal == "All_signals":
         plot_data = df
     else:
         plot_data = df[df['Signal'] == selected_signal]
@@ -43,7 +43,7 @@ def show_plot():
     fig, ax = plt.subplots(figsize=(10, 6), num=f"График: {selected_signal}")
     fig.suptitle(f'Модель: {model_name} | Сигнал: {selected_signal}', fontsize=16)
 
-    if selected_signal == "Все сигналы":
+    if selected_signal == "All_signals":
         for signal in plot_data['Signal'].unique():
             sig_data = plot_data[plot_data['Signal'] == signal]
             ax.plot(sig_data['Step'], sig_data['y'], label=signal, linewidth=2)
@@ -69,7 +69,7 @@ control_frame.pack(fill='x', padx=10)
 
 tk.Label(control_frame, text="Выберите сигнал:", bg="#f0f0f0", font=("Arial", 11)).pack(side='left', padx=(0, 10))
 
-combo_signal = ttk.Combobox(control_frame, values=["Все сигналы", "Step", "Impulse", "Harmonic"], state="readonly", font=("Arial", 11))
+combo_signal = ttk.Combobox(control_frame, values=["All_signals", "Step", "Impulse", "Harmonic"], state="readonly", font=("Arial", 11))
 combo_signal.current(0)
 combo_signal.pack(side='left', padx=(0, 20))
 

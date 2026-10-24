@@ -111,4 +111,12 @@ pause
 
 ## Демонстрация результатов моделирования:
 
-![Результаты выполнения файла plot.py](graphs/plot_results.png)
+![Результаты выполнения файла plot.py](work_plot_py.png)
+
+![Результаты выполнения файла plot.py](graphs/plot_All_signals.png)
+
+![Результаты выполнения файла plot.py](graphs/plot_Harmonic.png)
+
+![Результаты выполнения файла plot.py](graphs/plot_Impulse.png)
+
+![Результаты выполнения файла plot.py](graphs/plot_Step.png)
