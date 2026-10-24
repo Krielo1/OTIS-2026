@@ -59,6 +59,10 @@
 - `NonlinearModel2_10`
 - `DiffEqModel3_2`
 
+## UML
+
+![UML-диаграмма](uml.png)
+
 ## Результат
 
 Программа:
@@ -108,7 +112,3 @@ pause
 ## Демонстрация результатов моделирования:
 
 ![Результаты выполнения файла plot.py](graphs/plot_results.png)
-
-## UML
-
-![UML-диаграмма](uml.png)
